@@ -70,6 +70,19 @@ class FeatureCalculator:
         return self.data
 
 
+    def stop_codon_present(self):
+        '''
+        Checks of  on stop codons TAA TGA TAG
+        '''
+        def calc(seq):
+            STOP = ["TAA", "TGA", "TAG"]
+            # check in any of the stop codons are in the seq
+            return int(any(sc in STOP for sc in seq))
+
+        self.data['stop_codon_present'] = self.data[self.SEQ].apply(calc)
+        return self.data
+
+
     def feature_template(self):
         '''
         feature: adds new attribute
