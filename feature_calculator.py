@@ -3,6 +3,7 @@ calculates features for a given file
 '''
 
 import pandas as pd
+import re
 
 class FeatureCalculator:
     def __init__(self, source_file):
@@ -39,6 +40,7 @@ class FeatureCalculator:
         self.data['gc_content'] = self.data[self.SEQ].apply(calc)
         return self.data
 
+
     def tataaa_box_present(self):
         '''
         feature: adds tataaa box attribute
@@ -47,6 +49,24 @@ class FeatureCalculator:
             return int('TATAA' in seq)
 
         self.data['tataaa'] = self.data[self.SEQ].apply(calc)
+        return self.data
+
+
+    def poly_a_tail(self, n=3):
+        '''
+        3 or more As in last 36 nucleotide
+        '''
+        def calc(seq):
+            if len(seq) < 36:
+                return 0
+
+            seq = seq[-36:]
+            pattern = 'A{'+str(n)+'"'
+            matches = re.findall(pattern, seq)
+
+            return len(matches)
+
+        self.data['poly_a'] = self.data[self.SEQ].apply(calc)
         return self.data
 
 
