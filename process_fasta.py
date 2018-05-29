@@ -1,5 +1,6 @@
 '''
 clean and format fasta files
+usage: python pocess_fasta.py file1 [file2] ... [fileN]
 '''
 
 import sys
@@ -7,16 +8,29 @@ import sys
 COLUMNS = ['gene_stable_id', 'transcript_stable_id', 'seq']
 
 def decorator(n):
+    '''
+     ¯\_(ツ)_/¯
+    '''
     print("*"*n)
 
 def header_line():
+    '''
+    returns the header line
+    '''
     return ",".join(COLUMNS)
 
 def format_data_line(line):
+    '''
+    formats each line into comma separated values
+    '''
     data_line = line[:15] + "," + line[15:30] + "," + line[30:]
     return data_line
 
 def fasta_format(path):
+    '''
+    cleans and formats file and writes to file.clean
+    removes Sequence unavailable lines too
+    '''
     # create a file handler
     file = open(path, 'r')
 
@@ -43,7 +57,8 @@ def fasta_format(path):
     new_file.flush()
     new_file.close()
 
-# Starts here
+
+# **** Starts here ****
 decorator(25)
 # read file from args
 if(len(sys.argv) < 2):
