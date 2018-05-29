@@ -39,6 +39,16 @@ class FeatureCalculator:
         self.data['gc_content'] = self.data[self.SEQ].apply(calc)
         return self.data
 
+    def tataaa_box_present(self):
+        '''
+        feature: adds tataaa box attribute
+        '''
+        def calc(seq):
+            return int('TATAA' in seq)
+
+        self.data['tataaa'] = self.data[self.SEQ].apply(calc)
+        return self.data
+
 
     def feature_template(self):
         '''
