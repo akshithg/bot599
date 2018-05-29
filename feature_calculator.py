@@ -38,3 +38,16 @@ class FeatureCalculator:
 
         self.data['gc_content'] = self.data[self.SEQ].apply(calc)
         return self.data
+
+
+    def feature_template(self):
+        '''
+        feature: adds new attribute
+        '''
+        def calc(seq):
+            # CHANGE THIS
+            # val = calculate fature value on seq
+            return val
+
+        self.data['CHANGE_THIS_to_your_feature_name'] = self.data[self.SEQ].apply(calc)
+        return self.data
