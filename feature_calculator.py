@@ -2,13 +2,29 @@
 calculates features for a given file
 '''
 
+import sys
 import pandas as pd
 import re
+import code
+
+
+def usage_str():
+    '''
+    usage string
+    '''
+    print("python feature_calculator.py file_with_clean_data")
+
+def decorator(n):
+    '''
+     ¯\_(ツ)_/¯
+    '''
+    print("*"*n)
 
 class FeatureCalculator:
     def __init__(self, source_file):
         self.source_file = source_file
         self.data = pd.read_csv(source_file, skip_blank_lines=True)
+        self.data.index.name = 'seq_no'
         self.SEQ = 'seq'
 
 
@@ -89,8 +105,20 @@ class FeatureCalculator:
         '''
         def calc(seq):
             # CHANGE THIS
-            # val = calculate fature value on seq
+            # val = calculate feature value on seq
             return val
 
         self.data['CHANGE_THIS_to_your_feature_name'] = self.data[self.SEQ].apply(calc)
         return self.data
+
+
+## starts here
+
+if(len(sys.argv) != 2):
+    usage_str()
+else:
+    feature_calculator = FeatureCalculator(sys.argv[1])
+    decorator(25)
+    print("`feature_calculator` object created, you can now interact with it")
+    decorator(25)
+    code.interact(local=dict(globals(), **locals()))
