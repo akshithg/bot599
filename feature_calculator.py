@@ -68,6 +68,18 @@ class FeatureCalculator:
         return self.data
 
 
+    def gc_box(self):
+        '''
+        feature: adds gc box attribute: CCAAT and GGGCGG
+        '''
+        def calc(seq):
+            gc = ['CCAAT', 'GGGCGG']
+            return int(any(s in gc for s in seq))
+
+        self.data['gc_box'] = self.data[self.SEQ].apply(calc)
+        return self.data
+
+
     def poly_a_tail(self, n=3):
         '''
         3 or more As in last 36 nucleotide
