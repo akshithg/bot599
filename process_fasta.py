@@ -9,7 +9,6 @@ COLUMNS = ['gene_stable_id', 'transcript_stable_id', 'seq']
 
 def decorator(n):
     '''
-     ¯\_(ツ)_/¯
     '''
     print("*"*n)
 

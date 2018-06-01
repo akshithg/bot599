@@ -16,7 +16,6 @@ def usage_str():
 
 def decorator(n):
     '''
-     ¯\_(ツ)_/¯
     '''
     print("*"*n)
 
