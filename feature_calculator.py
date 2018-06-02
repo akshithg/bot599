@@ -1,9 +1,10 @@
 '''
 calculates features for a given file
-usage: python feature_calculator.py <file_with_clean_data>
+usage: python feature_calculator.py <file_with_clean_data> [output_file]
 '''
 
 import sys
+import os
 import pandas as pd
 import re
 import code
@@ -13,7 +14,7 @@ def usage_str():
     '''
     usage string
     '''
-    print("usage: python feature_calculator.py <file_with_clean_data>")
+    print("usage: python feature_calculator.py <file_with_clean_data> [output_file]")
 
 def decorator(n):
     '''
@@ -34,17 +35,19 @@ class FeatureCalculator:
     def feature_columns(self):
         return list(set(self.data.columns.tolist()) - set(self.non_feature_columns))
 
-    def save_features(self, columns=[]):
+    def save_features(self, columns=[], output_file=""):
         '''
         exports all data with features to a new file
         '''
         if not columns:
             columns = self.data.columns.tolist()
 
-        feature_file = self.source_file+"._features"
-        self.data.to_csv(feature_file, sep=',', columns=columns)
+        if output_file == "":
+            output_file = self.source_file + ".feature"
+
+        self.data.to_csv(output_file, sep=',', columns=columns)
         print("saving features: "+str(columns))
-        print("Saved to " + feature_file)
+        print("Saved to " + output_file)
 
 
     def gc_content(self):
@@ -155,7 +158,7 @@ class FeatureCalculator:
 ## starts here
 decorator(25)
 
-if(len(sys.argv) != 2):
+if(len(sys.argv) < 2):
     usage_str()
 else:
     feature_calculator = FeatureCalculator(sys.argv[1])
@@ -176,7 +179,12 @@ else:
     feature_calculator.sequence_length()
 
     # save features to file
-    feature_calculator.save_features(feature_calculator.feature_columns())
+    if(len(sys.argv)==3):
+        output_file = sys.argv[2]
+    else:
+        output_file = ""
+
+    feature_calculator.save_features(feature_calculator.feature_columns(), output_file)
 
     print("DONE")
 
