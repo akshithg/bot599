@@ -1,5 +1,6 @@
 '''
 calculates features for a given file
+usage: python feature_calculator.py <file_with_clean_data>
 '''
 
 import sys
@@ -12,7 +13,7 @@ def usage_str():
     '''
     usage string
     '''
-    print("python feature_calculator.py file_with_clean_data")
+    print("usage: python feature_calculator.py <file_with_clean_data>")
 
 def decorator(n):
     '''
@@ -23,13 +24,15 @@ class FeatureCalculator:
     def __init__(self, source_file):
         self.source_file = source_file
         self.data = pd.read_csv(source_file, skip_blank_lines=True)
+        self.set_sequence_column()
         self.data.index.name = 'seq_no'
-        self.SEQ = 'seq'
+        self.non_feature_columns = self.data.columns.tolist()
 
-
-    def set_sequence_column(self, seq):
+    def set_sequence_column(self, seq="seq"):
         self.SEQ = seq
 
+    def feature_columns(self):
+        return list(set(self.data.columns.tolist()) - set(self.non_feature_columns))
 
     def save_features(self, columns=[]):
         '''
@@ -40,6 +43,7 @@ class FeatureCalculator:
 
         feature_file = self.source_file+"._features"
         self.data.to_csv(feature_file, sep=',', columns=columns)
+        print("saving features: "+str(columns))
         print("Saved to " + feature_file)
 
 
@@ -47,6 +51,8 @@ class FeatureCalculator:
         '''
         feature: adds gc_content attribute
         '''
+        print ("calculating GC content")
+
         def calc(seq):
             g = seq.count('G')
             c = seq.count('C')
@@ -60,6 +66,8 @@ class FeatureCalculator:
         '''
         feature: adds tataaa box attribute
         '''
+        print ("calculating TATAAA box")
+
         def calc(seq):
             return int('TATAA' in seq)
 
@@ -71,6 +79,8 @@ class FeatureCalculator:
         '''
         feature: adds gc box attribute: CCAAT and GGGCGG
         '''
+        print ("calculating GC box")
+
         def calc(seq):
             gc = ['CCAAT', 'GGGCGG']
             return int(any(s in gc for s in seq))
@@ -83,6 +93,8 @@ class FeatureCalculator:
         '''
         3 or more As in last 36 nucleotide
         '''
+        print ("calculating poly A tail")
+
         def calc(seq):
             if len(seq) < 36:
                 return 0
@@ -101,6 +113,8 @@ class FeatureCalculator:
         '''
         Checks of  on stop codons TAA TGA TAG
         '''
+        print ("calculating stop codons")
+
         def calc(seq):
             STOP = ["TAA", "TGA", "TAG"]
             # check in any of the stop codons are in the seq
@@ -110,13 +124,28 @@ class FeatureCalculator:
         return self.data
 
 
+    def sequence_length(self):
+        '''
+        calculates length of the seq
+        '''
+        print("calcualting sequence length")
+
+        def calc(seq):
+            return len(seq)
+
+        self.data['seq_length'] = self.data[self.SEQ].apply(calc)
+        return self.data
+
+
     def feature_template(self):
         '''
         feature: adds new attribute
         '''
+        print("calculating ... ? ")
         def calc(seq):
             # CHANGE THIS
             # val = calculate feature value on seq
+            val = 0
             return val
 
         self.data['CHANGE_THIS_to_your_feature_name'] = self.data[self.SEQ].apply(calc)
@@ -124,12 +153,31 @@ class FeatureCalculator:
 
 
 ## starts here
+decorator(25)
 
 if(len(sys.argv) != 2):
     usage_str()
 else:
     feature_calculator = FeatureCalculator(sys.argv[1])
-    decorator(25)
-    print("`feature_calculator` object created, you can now interact with it")
-    decorator(25)
-    code.interact(local=dict(globals(), **locals()))
+
+    # # interactive run
+    # decorator(25)
+    # print("`feature_calculator` object created, you can now interact with it")
+    # decorator(25)
+    # code.interact(local=dict(globals(), **locals()))
+
+
+    # calculate features
+    feature_calculator.gc_content()
+    feature_calculator.tataaa_box_present()
+    feature_calculator.gc_box()
+    feature_calculator.poly_a_tail()
+    feature_calculator.stop_codon_present()
+    feature_calculator.sequence_length()
+
+    # save features to file
+    feature_calculator.save_features(feature_calculator.feature_columns())
+
+    print("DONE")
+
+decorator(25)

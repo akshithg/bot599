@@ -1,11 +1,18 @@
 '''
 clean and format fasta files
-usage: python pocess_fasta.py file1 [file2] ... [fileN]
+default output: <input_file_path>.clean
+usage: python pocess_fasta.py <fasta_file> [output_file]
 '''
 
 import sys
 
 COLUMNS = ['gene_stable_id', 'transcript_stable_id', 'seq']
+
+def usage_str():
+    '''
+    usage string
+    '''
+    print("usage: python pocess_fasta.py <fasta_file> [output_file]")
 
 def decorator(n):
     '''
@@ -25,48 +32,51 @@ def format_data_line(line):
     data_line = line[:15] + "," + line[15:30] + "," + line[30:]
     return data_line
 
-def fasta_format(path):
+def fasta_format(path, output_file):
     '''
     cleans and formats file and writes to file.clean
     removes Sequence unavailable lines too
     '''
+    print("formatting file: "+path)
     # create a file handler
-    file = open(path, 'r')
+    input_file = open(path, 'r')
 
     # read, replace new line, split at >
-    lines = file.read()\
-                .replace("\n", "")\
-                .replace("|", "")\
-                .split(">")[1:]
+    lines = input_file.read()\
+                      .replace("\n", "")\
+                      .replace("|", "")\
+                      .split(">")[1:]
 
     # close file
-    file.close()
+    input_file.close()
 
-    # write to a new file
-    new_file = open(path+".clean", "w")
+    # write to output file
+    print("writing to: "+output_file)
+    output_file = open(output_file, "w")
 
     # write header line
-    new_file.write(header_line()+"\n")
+    output_file.write(header_line()+"\n")
     # write data lines
     for line in lines:
         if(not "Sequence unavailable" in line):
-            new_file.write(format_data_line(line) + "\n")
+            output_file.write(format_data_line(line) + "\n")
 
     # flush and close file.clean
-    new_file.flush()
-    new_file.close()
+    output_file.flush()
+    output_file.close()
 
 
 # **** Starts here ****
 decorator(25)
 # read file from args
 if(len(sys.argv) < 2):
-    print("usage: python pocess_fasta.py file1 [file2] ... [fileN]")
+    usage_str()
 else:
-    for file in (sys.argv[1:]):
-        # formats file
-        print("formatting file: "+file)
-        fasta_format(file)
+    try:
+        fasta_format(path=sys.argv[1], output_file=sys.argv[2])
+    except:
+        fasta_format(path=sys.argv[1], output_file=sys.argv[1]+".clean")
+
+    print("DONE")
 
 decorator(25)
-print("DONE")

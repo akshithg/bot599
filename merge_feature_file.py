@@ -1,35 +1,44 @@
 '''
 file join
-usage: python file_splitter.py file1 file2 [file3] ... [fileN] outputfile
+usage: python merge_features.py directory output_file
 '''
 
 import sys
+import os
 
 def usage_str():
     '''
     usage string
     '''
-    print("usage: python file_splitter.py file1 file2 [file3] ... [fileN] outputfile")
+    print("usage: python merge_features.py <directory> <output_file>")
 
 def decorator(n):
     '''
     '''
     print("*"*n)
 
-def join_files(input_files, output_file):
+def join_files(directory, output_file):
     '''
     join all input_files into one output_file
     '''
-    print("writing to :"+output_file)
+    # Files in directory
+    print("files in the directory:")
+    input_files = []
+    for file in os.listdir(directory):
+        file = directory + "/" + file
+        print(file)
+        input_files.append(file)
+
+    print("\nwriting to :"+output_file)
     output_file = open(output_file, "w")
 
     write_header = False
     for file in input_files:
-        print("reading from: "+file)
         file = open(file)
         header = file.readline()
         data = file.readlines()
 
+        # write header once
         if not write_header:
             output_file.write(header)
             write_header = True
@@ -44,8 +53,6 @@ def join_files(input_files, output_file):
     output_file.close()
 
 
-
-
 # **** Starts here ****
 decorator(25)
 
@@ -53,7 +60,7 @@ decorator(25)
 if(len(sys.argv) < 3):
     usage_str()
 else:
-    join_files(sys.argv[1:-1], sys.argv[-1])
+    join_files(sys.argv[1], sys.argv[2])
+    print("DONE")
 
 decorator(25)
-print("DONE")
