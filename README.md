@@ -211,3 +211,8 @@ python merge_feature_file.py data/class2 data/class2_features
 </pre>
 
 ### 6. Run'em through SVM
+
+<pre>
+cd svm
+./run_svm.sh ../data/class1_features ../data/class2_features
+</pre>
