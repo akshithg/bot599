@@ -2,6 +2,8 @@
 calculates features for a given file
 usage: python feature_calculator.py <file_with_clean_data> [output_file]
 '''
+# for python 2 backward compatibility
+from __future__ import division
 
 import sys
 import os
