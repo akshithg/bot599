@@ -3,7 +3,7 @@ all:
 
 features: clean process_fasta split build_features
 
-svm: merge_files run_svm
+svm: merge_files truncate run_svm
 
 process_fasta:
 	python process_fasta.py ./data/3prime.fasta
@@ -25,6 +25,12 @@ status:
 merge_files:
 	python merge_feature_file.py data/class1 data/class1_features
 	python merge_feature_file.py data/class2 data/class2_features
+
+truncate:
+	head -50000 data/class1_features > data/class1_features.tmp
+	head -50000 data/class2_features > data/class2_features.tmp
+	mv data/class1_features.tmp data/class1_features
+	mv data/class2_features.tmp data/class2_features
 
 run_svm:
 	cd svm; ./run_svm.sh ../data/class1_features ../data/class2_features
