@@ -116,7 +116,7 @@ class FeatureCalculator:
 
     def stop_codon_present(self):
         '''
-        Checks of  on stop codons TAA TGA TAG
+        Checks for stop codons TAA TGA TAG
         '''
         print ("calculating stop codons")
 
@@ -139,6 +139,18 @@ class FeatureCalculator:
             return len(seq)
 
         self.data['seq_length'] = self.data[self.SEQ].apply(calc)
+        return self.data
+
+
+    def start_codon(self):
+        '''
+        Checks for start codons TAC
+        '''
+        print("checking for start codon")
+        def calc(seq):
+            return int("TAC" in seq)
+
+        self.data['start_codon'] = self.data[self.SEQ].apply(calc)
         return self.data
 
 
@@ -178,6 +190,7 @@ else:
     feature_calculator.gc_box()
     feature_calculator.poly_a_tail()
     feature_calculator.stop_codon_present()
+    feature_calculator.start_codon()
     feature_calculator.sequence_length()
 
     # save features to file
