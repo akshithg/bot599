@@ -24,8 +24,7 @@ merge_files:
 	python merge_feature_file.py data/class2 data/class2_features
 
 run_svm:
-	cd svm
-	./run_svm.sh ../data/class1_features ../data/class2_features
+	cd svm; ./run_svm.sh ../data/class1_features ../data/class2_features
 
 clean:
 	rm -rf ./*.log data/*.clean data/*.splits data/class1 data/class2 data/class1_features data/class2_features
