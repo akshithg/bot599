@@ -19,6 +19,9 @@ build_features:
 	qsub ./sun_grid_engine/job.q data/5prime.fasta.clean.splits/part data/class1/feature
 	qsub ./sun_grid_engine/job.q data/3prime.fasta.clean.splits/part data/class2/feature
 
+status:
+	./sun_grid_engine/check_status.sh
+
 merge_files:
 	python merge_feature_file.py data/class1 data/class1_features
 	python merge_feature_file.py data/class2 data/class2_features
