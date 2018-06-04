@@ -47,7 +47,7 @@ class FeatureCalculator:
         if output_file == "":
             output_file = self.source_file + ".feature"
 
-        self.data.to_csv(output_file, sep=',', columns=columns)
+        self.data.to_csv(output_file, sep='\t', columns=columns)
         print("saving features: "+str(columns))
         print("Saved to " + output_file)
 

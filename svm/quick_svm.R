@@ -20,11 +20,11 @@ negfile <- args[2]
 ###########################
 ### Read in data, set rownames to gene ids and remove that col
 
-positive <- read.table(posfile, header = T, sep = ",", stringsAsFactors = FALSE)
+positive <- read.table(posfile, header = T, sep = "\t", stringsAsFactors = FALSE)
 rownames(positive) <- paste(positive[,1], seq(1, nrow(positive))) # to make the rownames unique
 positive[,1] <- NULL
 
-negative <- read.table(negfile, header = T, sep = ",", stringsAsFactors = FALSE)
+negative <- read.table(negfile, header = T, sep = "\t", stringsAsFactors = FALSE)
 rownames(negative) <- paste(negative[,1], seq(1, nrow(negative))) # to make the rownames unique
 negative[,1] <- NULL
 
