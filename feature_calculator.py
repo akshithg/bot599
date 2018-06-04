@@ -41,6 +41,11 @@ class FeatureCalculator:
         '''
         exports all data with features to a new file
         '''
+        # drop useless columns
+        for col in self.feature_columns():
+            if len(self.data[col].unique()) == 1:
+                self.data.drop(columns=col, inplace=True)
+
         if not columns:
             columns = self.data.columns.tolist()
 
