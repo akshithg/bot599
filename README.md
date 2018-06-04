@@ -1,8 +1,10 @@
 # BOT599
 
-## Pipeline
+## Clone this repo
 
-fasta - clean - split - feature - merge - svm
+<pre>
+git clone https://github.com/akshithg/bot599.git && cd bot599
+</pre>
 
 ### 1. Get those FASTA File
 
