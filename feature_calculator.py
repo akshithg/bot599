@@ -163,6 +163,18 @@ class FeatureCalculator:
         return self.data
 
 
+    def kozak(self):
+        '''
+        Checks for kozak consensus sequence ACCAUGG
+        '''
+        print("checking for kozak consensus sequence")
+        def calc(seq):
+            return int("ACCAUGG" in seq)
+
+        self.data['kozak'] = self.data[self.SEQ].apply(calc)
+        return self.data
+
+
     def feature_template(self):
         '''
         feature: adds new attribute
@@ -201,6 +213,7 @@ else:
     feature_calculator.stop_codon_present()
     feature_calculator.start_codon()
     feature_calculator.sequence_length()
+    feature_calculator.kozak()
 
     # save features to file
     if(len(sys.argv)==3):
