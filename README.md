@@ -1,5 +1,7 @@
 # BOT599
 
+Note: For run instructions check the RUN-INSTRUCTIONS file.
+
 ## Clone this repo
 
 <pre>

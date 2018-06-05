@@ -1,0 +1,8 @@
+Steps to run:
+
+NOTE: Run these make commands from the current directory.
+
+1. make features
+2. make status
+lets you check status of SGE jobs, wait for all the SGE jobs to finish
+3. make svm
