@@ -3,6 +3,12 @@ Steps to run:
 NOTE: Run these make commands from the current directory.
 
 1. make features
+    - cleans up the fasta files
+    - splits them into manageable chunks
+    - preocesses features using SGE on the chunks
 2. make status
-lets you check status of SGE jobs, wait for all the SGE jobs to finish
+    - lets you check the status of the SGE jobs
+    - wait for all the SGE jobs to finish
 3. make svm
+    - joins all the feature chunks into one big file
+    - feeds them to the svm
